@@ -1,5 +1,5 @@
 # The builder image, used to build the virtual environment
-FROM python:3.12-buster AS builder
+FROM python:3.12-bullseye AS builder
 
 RUN pip install poetry
 
@@ -20,7 +20,7 @@ RUN touch README.md
 RUN poetry install --without dev --no-root && rm -rf "$POETRY_CACHE_DIR"
 
 # The runtime image, used to just run the code provided its virtual environment
-FROM python:3.12-slim-buster AS runtime
+FROM python:3.12-slim-bullseye AS runtime
 
 # Set up environment variables
 # Ensures any executable installed in the virtual environment are accesible
