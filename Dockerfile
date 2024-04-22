@@ -32,7 +32,7 @@ FROM base AS runtime
 COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
 # Copy the source code
-COPY src ./src 
+COPY ./src /app/
 
 WORKDIR /app/src
 
