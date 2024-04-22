@@ -1,4 +1,4 @@
-name: Testing
+name: CI/CD Pipeline
 
 on:
   push:
@@ -7,10 +7,11 @@ on:
     branches: [ "main" ]
 
 jobs:
+
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.1
 
       - name: Set up python
         uses: actions/setup-python@v5.1.0
@@ -42,3 +43,31 @@ jobs:
         run: |
           source .venv/bin/activate
           pytest test/
+
+  ci:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4.1.1
+  
+    - name: Build & push Docker image
+      uses: mr-smithers-excellent/docker-build-push@v6
+      with:
+        image: ianailex/demo-app
+        tags: latest
+        registry: docker.io
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+  cd:
+    needs: [test, ci]
+    runs-on: self-hosted
+
+    steps:
+    - name: Pull Docker image
+      run: sudo docker pull ianailex/demo-app:latest
+      
+    - name: Run Docker compose
+      run: sudo docker compose up -d
+      working-directory: /home/ubuntu/services/traefik
