@@ -16,8 +16,6 @@ jobs:
     - name: Pull Docker image
       run: sudo docker pull ianailex/demo-app:latest
       
-    - name: Delete Old docker container
-      run: sudo docker rm -f demo-app-container || true
-      
-    - name: Run Docker Container
-      run: sudo docker start demo-app
+    - name: Run Docker compose
+      run: sudo docker compose up -d
+      working-directory: /home/ubuntu/services/traefik
