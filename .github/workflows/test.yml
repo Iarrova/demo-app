@@ -42,4 +42,3 @@ jobs:
         run: |
           source .venv/bin/activate
           pytest test/
-          coverage report
