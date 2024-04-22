@@ -34,7 +34,7 @@ COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 # Copy the source code
 COPY ./src /app/
 
-WORKDIR /app/src
+WORKDIR /app
 
 # Run the application
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
